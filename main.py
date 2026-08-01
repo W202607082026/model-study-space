@@ -31,13 +31,13 @@ except ImportError:
 
 DATA_FILE = os.path.join(BASE_PATH, "wordbook_data.json")
 CORPUS_NAMES = [
-    "初中_合并.json",
-    "高中_合并.json",
-    "四级_合并.json",
-    "六级_合并.json",
-    "考研_合并.json",
-    "托福_合并.json",
-    "SAT_合并.json"
+    "junior.json",
+    "senior.json",
+    "cet4.json",
+    "cet6.json",
+    "kaoyan.json",
+    "toefl.json",
+    "sat.json"
 ]
 
 # ===================== 自定义高亮文本控件（模拟Tk Text tag高亮） =====================
