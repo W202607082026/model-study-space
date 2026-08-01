@@ -10,24 +10,30 @@ jobs:
     env:
       PIP_INDEX_URL: https://pypi.tuna.tsinghua.edu.cn/simple
     steps:
-      - name: Checkout code
+      - name: Checkout source
         uses: actions/checkout@v4
 
-      - name: Setup Python
+      - name: Setup Python 3.11
         uses: actions/setup-python@v5
         with:
           python-version: "3.11"
 
-      - name: Install system dependencies
+      - name: Install system libs
         run: |
           sudo apt update
           sudo apt install -y git zip unzip openjdk-17-jdk autoconf libtool pkg-config libpng-dev python3-pip python3-venv
 
-      - name: Install buildozer
+      - name: Install Buildozer
         run: pip install buildozer
 
-      - name: Accept Android SDK Licenses & Build APK
+      - name: Build APK
         run: |
           buildozer android clean
           yes | ~/.buildozer/android/platform/android-sdk/cmdline-tools/latest/bin/sdkmanager --licenses
           buildozer android release
+
+      - name: Upload APK artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: compiled-apk
+          path: bin/*.apk
