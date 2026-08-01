@@ -1,4 +1,8 @@
 name: Build Android APK
+run: |
+    # 自动同意所有Android SDK协议
+    yes | ~/.buildozer/android/platform/android-sdk/cmdline-tools/latest/bin/sdkmanager --licenses
+    buildozer android release
 on:
   push:
     branches: [ main ]
