@@ -1,38 +1,33 @@
 name: Build Android APK
-run: |
-    # 自动同意所有Android SDK协议
-    yes | ~/.buildozer/android/platform/android-sdk/cmdline-tools/latest/bin/sdkmanager --licenses
-    buildozer android release
+
 on:
   push:
     branches: [ main ]
+
 jobs:
   build:
     runs-on: ubuntu-latest
     env:
       PIP_INDEX_URL: https://pypi.tuna.tsinghua.edu.cn/simple
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-      - name: Setup Java17
-        uses: actions/setup-java@v4
+      - name: Setup Python
+        uses: actions/setup-python@v5
         with:
-          java-version: '17'
-          distribution: 'temurin'
+          python-version: "3.11"
 
-      - name: Install system packages
+      - name: Install system dependencies
         run: |
           sudo apt update
-          sudo apt install -y git zip unzip autoconf libtool pkg-config zlib1g-dev libncurses5-dev libncursesw5-dev libreadline-dev libssl-dev libsqlite3-dev libbz2-dev libffi-dev cmake python3-pip
-          pip3 install buildozer
+          sudo apt install -y git zip unzip openjdk-17-jdk autoconf libtool pkg-config libpng-dev python3-pip python3-venv
 
-      - name: Build release APK
-        run: buildozer android release
+      - name: Install buildozer
+        run: pip install buildozer
 
-      - name: Upload artifact to Release
-        uses: softprops/action-gh-release@v2
-        with:
-          files: bin/*.apk
-          generate_release_notes: true
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Accept Android SDK Licenses & Build APK
+        run: |
+          buildozer android clean
+          yes | ~/.buildozer/android/platform/android-sdk/cmdline-tools/latest/bin/sdkmanager --licenses
+          buildozer android release
