@@ -10,6 +10,7 @@ source.include_files = junior.json,senior.json,cet4.json,cet6.json,kaoyan.json,t
 requirements = python3,kivy,aiohttp
 
 android.permissions = INTERNET,ACCESS_NETWORK_STATE
+android.build_tools_version = "34.0.0"
 android.api = 33
 android.ndk = 25b
 
